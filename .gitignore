@@ -1,0 +1,10 @@
+.env
+.venv/
+.venv-windows/
+open-tender-monitor/yandex-eis-rss-bridge/private-config.js
+yandex-eis-rss-bridge/private-config.js
+__pycache__/
+*.py[cod]
+data/*.db
+data/*.db-*
+logs/
