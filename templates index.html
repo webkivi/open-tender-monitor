@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Open Tender Monitor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <main>
+    <header><div><p class="eyebrow">LOCAL MONITORING</p><h1>Open Tender Monitor</h1><p>Открытая локальная система поиска закупок и быстрых уведомлений.</p></div><form action="{{ url_for('scan') }}" method="post"><button>Проверить источники</button></form></header>
+    <section class="sources"><h2>Источники</h2>{% for source in sources %}{% set state = states.get(source.key, {}) %}<article><strong>{{ source.name }}</strong><span class="badge {{ 'on' if source.enabled else 'off' }}">{{ 'включен' if source.enabled else 'настройка нужна' }}</span><small>Интервал: {{ source.poll_seconds }} сек. Статус: {{ state.get('last_status', 'ожидание') }}.{% if state.get('next_check_at') %} Повтор: {{ state.next_check_at }}.{% endif %}{% if state.get('last_error') %} Причина: {{ state.last_error }}{% endif %}</small></article>{% endfor %}</section>
+    <section class="settings"><h2>Настройка источников</h2><form method="post" action="{{ url_for('save_source_settings') }}">{% for source in sources %}<fieldset><legend>{{ source.name }}</legend><label><input type="checkbox" name="{{ source.key }}_enabled" {% if source.enabled %}checked{% endif %}> Включить мониторинг</label><label>URL страницы поиска<input name="{{ source.key }}_search_url" value="{{ source.search_url }}" placeholder="https://..."></label><label>RSS-поток площадки<input name="{{ source.key }}_rss_url" value="{{ source.rss_url }}" placeholder="https://..."></label><label>Ключевые слова через запятую<input name="{{ source.key }}_include_terms" value="{{ source.include_terms | join(', ') }}"></label><label>Исключить слова<input name="{{ source.key }}_exclude_terms" value="{{ source.exclude_terms | join(', ') }}"></label><label>Интервал, секунд<input type="number" min="20" max="3600" name="{{ source.key }}_poll_seconds" value="{{ source.poll_seconds }}"></label></fieldset>{% endfor %}<button>Сохранить настройки источников</button></form></section>
+    <section><h2>Найденные закупки</h2><div class="tenders">{% for tender in tenders %}<article class="tender"><div><span class="source">{{ tender.source_name }}</span><a href="{{ tender.url }}" target="_blank" rel="noreferrer">{{ tender.title }}</a><p>{{ tender.summary }}</p><small>{{ tender.first_seen_at }}</small></div><form method="post" action="{{ url_for('set_status', tender_id=tender.id) }}"><select name="status"><option value="new" {% if tender.status == 'new' %}selected{% endif %}>Новая</option><option value="in_progress" {% if tender.status == 'in_progress' %}selected{% endif %}>В работу</option><option value="not_interesting" {% if tender.status == 'not_interesting' %}selected{% endif %}>Неинтересно</option><option value="remind" {% if tender.status == 'remind' %}selected{% endif %}>Напомнить</option></select><button>Сохранить</button></form></article>{% else %}<p class="empty">Пока нет результатов. Заполните URL и ключевые слова в <code>config/sources.json</code>, затем включите нужный источник.</p>{% endfor %}</div></section>
+  </main>
+</body>
+</html>
