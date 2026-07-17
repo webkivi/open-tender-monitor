@@ -1,0 +1,44 @@
+{
+  "sources": [
+    {
+      "key": "eis",
+      "name": "ЕИС (44-ФЗ и 223-ФЗ)",
+      "enabled": false,
+      "search_url": "",
+      "poll_seconds": 20,
+      "include_terms": ["bitrix", "битрикс", "эвм", "bitrix24", "битрикс24", "1с-битрикс"],
+      "exclude_terms": [],
+      "rss_url": ""
+    },
+    {
+      "key": "rts",
+      "name": "RTS-Tender",
+      "enabled": false,
+      "search_url": "",
+      "poll_seconds": 45,
+      "include_terms": ["bitrix", "битрикс", "эвм", "bitrix24", "битрикс24", "1с-битрикс"],
+      "exclude_terms": [],
+      "rss_url": ""
+    },
+    {
+      "key": "eat",
+      "name": "ЕАТ Берёзка",
+      "enabled": false,
+      "search_url": "",
+      "poll_seconds": 45,
+      "include_terms": ["bitrix", "битрикс", "эвм", "bitrix24", "битрикс24", "1с-битрикс"],
+      "exclude_terms": [],
+      "rss_url": ""
+    },
+    {
+      "key": "roseltorg",
+      "name": "Росэлторг",
+      "enabled": false,
+      "search_url": "",
+      "poll_seconds": 45,
+      "include_terms": ["bitrix", "битрикс", "эвм", "bitrix24", "битрикс24", "1с-битрикс"],
+      "exclude_terms": [],
+      "rss_url": ""
+    }
+  ]
+}
